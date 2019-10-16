@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
+import { connect } from 'react-redux';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import Footer from '../components/Footer';
 import userInitialState from '../hooks/useInitialState';
-
 import '../assets/styles/App.scss';
+import { constants } from 'zlib';
 
-const API = 'http://localhost:3000/initalState';
-const App = () => {
-    const initialState = userInitialState(API);
+const Home = ({ mylist, trends, originals}) => {
     return (
-        <div className="App">
-            <Header />
+        <React.Fragment>
             <Search />
-            {initialState.mylist.length > 0 && 
+            {mylist.length > 0 && 
                 <Categories title="Mi lista">
                     <Carousel>
-                        {initialState.mylist.map(item =>
-                            <CarouselItem key={item.id} {...item}/>
+                        {mylist.map(item =>
+                            <CarouselItem 
+                                key={item.id} 
+                                {...item}
+                                isList
+                            />
                         )}
                     </Carousel>
                 </Categories>
             }
             <Categories title="Tendencias">
                 <Carousel>
-                    {initialState.trends.map(item =>
+                    {trends.map(item =>
                         <CarouselItem key={item.id} {...item}/>
                     )}
                 </Carousel>
@@ -35,14 +35,21 @@ const App = () => {
 
             <Categories title="Originales de platzi video">
                 <Carousel>
-                    {initialState.trends.map(item =>
+                    {originals.map(item =>
                         <CarouselItem key={item.id} {...item}/>
                     )}
                 </Carousel>
             </Categories>
-            <Footer />
-        </div>
+        </React.Fragment>
     );
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        mylist: state.mylist,
+        trends: state.trends,
+        originals: state.originals,
+    };
+};
+
+export default connect(mapStateToProps, null)(Home);
