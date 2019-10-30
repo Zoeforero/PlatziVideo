@@ -175,7 +175,7 @@ const initialState = {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers());
 
-ReactDOM.render(
+ReactDOM.render(// Render recibe dos parametros 1. el componente 2.Dónde voy a empujar el componente
     <Provider store={store}>
         <App />
     </Provider>, 
